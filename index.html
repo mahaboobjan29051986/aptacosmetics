@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apta Cosmetics — Liquid Foundation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#DB2777;
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --radius:14px;
+      --max:1100px;
+    }
+    *{box-sizing:border-box}
+    body{
+      font-family: 'Inter', system-ui;
+      margin:0; background:var(--bg); color:#0f172a;
+    }
+    .nav{max-width:var(--max); margin:18px auto; padding:12px 20px; display:flex; justify-content:space-between;}
+    .brand{font-weight:700; font-size:1.1rem; color:var(--accent)}
+    .badge{background:var(--card); padding:8px 12px; border-radius:999px;}
+    .hero{max-width:var(--max); margin:24px auto; display:grid; grid-template-columns: 1fr 420px; gap:30px; padding:28px;}
+    @media (max-width:880px){ .hero{grid-template-columns:1fr; padding:18px} .product-stage{order:-1} }
+    .copy{background:linear-gradient(180deg,#fff,#fff); padding:30px; border-radius:var(--radius);}
+    h1{margin:0 0 12px 0; font-size:2rem}
+    p.lead{color:var(--muted); margin:0 0 18px 0}
+    .feature{background:var(--card); padding:10px 12px; border-radius:10px; font-size:0.9rem;}
+    .product-stage{display:flex; gap:18px;}
+    .card{background:var(--card); border-radius:18px; padding:18px; width:420px;}
+    .main-image{width:100%; height:420px; border-radius:12px; object-fit:cover;}
+    .thumbs{display:flex; gap:10px; margin-top:12px}
+    .thumb{width:64px; height:64px; border-radius:10px;}
+    .meta{margin-left:12px; max-width:360px}
+    .price{font-size:1.6rem; color:var(--accent); font-weight:700}
+    .old{text-decoration:line-through; margin-left:8px;}
+    .shades{display:flex; gap:10px; margin:14px 0;}
+    .shade{width:38px; height:38px; border-radius:50%; cursor:pointer; border:3px solid transparent;}
+    .shade.selected{border-color:var(--accent)}
+    .qty{display:flex; gap:8px;}
+    .btn{background:var(--accent); color:white; border:none; padding:12px 18px; border-radius:12px; cursor:pointer; font-weight:600}
+    .btn.secondary{background:transparent; color:var(--accent); border:1px solid var(--accent)}
+    footer{text-align:center; color:var(--muted); margin:36px 0;}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="brand">Apta Cosmetics</div>
+    <div class="badge">Free delivery ₹499+</div>
+  </nav>
+
+  <section class="hero">
+    <div class="copy">
+      <h1>Maliao High Coverage Liquid Foundation</h1>
+      <p class="lead">Silky, waterproof base foundation — lightweight feel with full coverage.</p>
+
+      <div style="display:flex; gap:12px;">
+        <div>
+          <div class="price">Rs. 399 <span class="old">Rs. 599</span></div>
+          <div style="color:var(--muted); font-size:0.9rem">Inclusive of all taxes</div>
+        </div>
+
+        <div style="margin-left:auto; display:flex; gap:10px">
+          <button class="btn" id="buy-now">Buy Now</button>
+          <button class="btn secondary" id="add-cart">Add to Cart</button>
+        </div>
+      </div>
+
+      <div style="margin-top:20px">
+        <div style="font-size:0.85rem; color:var(--muted)">Choose shade</div>
+        <div class="shades" id="shades">
+          <div class="shade selected" data-shade="01 White Ivory" style="background:#fff2f0"></div>
+          <div class="shade" data-shade="02 Soft Ivory" style="background:#ffece6"></div>
+          <div class="shade" data-shade="03 Natural Beige" style="background:#fbe7d7"></div>
+          <div class="shade" data-shade="04 Natural Nude" style="background:#f5d3c0"></div>
+        </div>
+
+        <div class="qty">
+          <button class="btn secondary" id="dec">-</button>
+          <div id="qty" style="min-width:30px; text-align:center; font-weight:600">1</div>
+          <button class="btn secondary" id="inc">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-stage">
+      <div class="card">
+        <img id="mainImg" class="main-image" src="https://i.ibb.co/XZc6M4R9/catlogue.jpg">
+        <div class="thumbs" id="thumbs">
+          <div class="thumb active" data-src="https://i.ibb.co/XZc6M4R9/catlogue.jpg"><img src="https://i.ibb.co/XZc6M4R9/catlogue.jpg" style="width:100%; height:100%;"></div>
+        </div>
+      </div>
+      <div class="meta">
+        <h3>High Coverage — 40ml</h3>
+        <p style="color:var(--muted); margin-bottom:8px">Maliao waterproof base foundation</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>© Apta Cosmetics — All rights reserved</footer>
+
+  <script>
+    let qty = 1;
+    document.getElementById('inc').onclick = ()=>{ qty++; document.getElementById('qty').innerText = qty; }
+    document.getElementById('dec').onclick = ()=>{ if(qty>1) qty--; document.getElementById('qty').innerText = qty; }
+
+    document.getElementById('buy-now').onclick = ()=>{
+      window.location = "checkout.html";
+    };
+
+    document.getElementById('add-cart').onclick = ()=>{
+      const shade = document.querySelector('.shade.selected').dataset.shade;
+      const item = {id:'maliao-40ml', title:'Maliao Liquid Foundation', price:399, qty, shade};
+      const cart = JSON.parse(localStorage.getItem('cart')||'[]');
+      cart.push(item);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert("Added to cart");
+    };
+  </script>
+</body>
+</html>
